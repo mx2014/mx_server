@@ -20,9 +20,9 @@
 	</context:component-scan>
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
-		<property name="url" value="jdbc:mysql://game1439.mysql.rds.aliyuncs.com/mysocket" />
-		<property name="username" value="root" />
-		<property name="password" value="root" />
+		<property name="url" value="jdbc:mysql://game1439.mysql.rds.aliyuncs.com:3306/game_db" />
+		<property name="username" value="game_test" />
+		<property name="password" value="123456oym" />
 		<property name="initialSize" value="0" />
 		<property name="maxActive" value="150" />
 		<property name="maxIdle" value="10" />

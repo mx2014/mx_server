@@ -20,23 +20,23 @@ public class IndexAction {
 	public IndexService is;
 	
 	UserInfo userinfo=new UserInfo();
-	
+
 	@RequestMapping(value = "index", method = RequestMethod.GET)
 	public ModelAndView index(ModelMap model) throws Exception {
 		return new ModelAndView("/home/html/index");
 	}
-
+	
 	@RequestMapping(value = "aaa", method = RequestMethod.GET)
 	public ModelAndView aaa(
 			@RequestParam("user_name") String user_name,
-			@RequestParam("iphone_type") int iphone_type,
+			@RequestParam("iphone_type") Integer iphone_type,
 			@RequestParam("login_ip") String login_ip,
-			@RequestParam("mc_adress") String mc_adress,
+			@RequestParam("mac_adress") String mac_adress,
 			ModelMap model) throws Exception {
 		userinfo.setUser_name(user_name);
 		userinfo.setIphone_type(iphone_type);
 		userinfo.setLogin_ip(login_ip);
-		userinfo.setMc_adress(mc_adress);
+		userinfo.setMac_adress(mac_adress);
 		is.add(userinfo);
 		return new ModelAndView("/home/html/index");
 	}
