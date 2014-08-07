@@ -11,7 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="UserInfo")
+@Table(name="userinfo")
 public class UserInfo {
 	/**
 	 * id
@@ -30,8 +30,8 @@ public class UserInfo {
 	@Column(name = "login_ip")
 	private String login_ip;
 	
-	@Column(name = "mc_adress")
-	private String mc_adress;
+	@Column(name = "mac_adress")
+	private String mac_adress;
 
 	public Integer getId() {
 		return id;
@@ -65,13 +65,13 @@ public class UserInfo {
 		this.login_ip = login_ip;
 	}
 
-	public String getMc_adress() {
-		return mc_adress;
+	public String getMac_adress() {
+		return mac_adress;
 	}
 
-	public void setMc_adress(String mc_adress) {
-		this.mc_adress = mc_adress;
+	public void setMac_adress(String mac_adress) {
+		this.mac_adress = mac_adress;
 	}
-	
+
 	
 }
