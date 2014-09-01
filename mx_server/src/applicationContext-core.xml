@@ -35,6 +35,7 @@
 		 <property name="annotatedClasses"> 
 		 	<list> 
 		 		<value>pojo.UserInfo</value>
+		 		<value>pojo.Login</value>
 		 	</list>
 		</property>
 		<property name="hibernateProperties">
@@ -56,4 +57,9 @@
 		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
 		<property name="sessionFactory" ref="sessionFactory"></property>
 	</bean>
+	<bean id="jsonConverter"
+ 		class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">  
+ 		<property name="supportedMediaTypes" value="application/json" />
+	</bean>
+	
 </beans>

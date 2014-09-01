@@ -5,14 +5,18 @@
 	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
 	xsi:schemaLocation="http://www.springframework.org/schema/mvc 
 		http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
-		http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans
 		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
 		http://www.springframework.org/schema/context 
 		http://www.springframework.org/schema/context/spring-context-3.0.xsd
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+		
 	<context:component-scan base-package="com.springmvc.simples" />
 	<context:component-scan base-package="*" />
+	<context:component-scan base-package="org.zlex.json.controller" />  
+	<context:annotation-config/>
+	
 	<mvc:annotation-driven />
 	<mvc:resources mapping="/admin/img/**" location="/WEB-INF/view/admin/img/" />
 	<mvc:resources mapping="/admin/js/**" location="/WEB-INF/view/admin/js/" />
@@ -22,27 +26,44 @@
 	<mvc:resources mapping="/home/js/**" location="/WEB-INF/view/home/js/" />
 	<mvc:resources mapping="/home/css/**" location="/WEB-INF/view/home/css/" />
 	<mvc:resources mapping="/home/html/**" location="/WEB-INF/view/home/html/" />
-	<bean
-		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+	
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix" value="/WEB-INF/view/"></property>
 		<property name="suffix" value=".jsp"></property>
 	</bean>
+	 
+	<bean class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter"/> 
 	
-	<bean
-		class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+	<bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping" id="simpleUrlHandlerMapping">
+  		<property name="mappings">
+    		<props>
+     			<prop key="test1">empController</prop>
+      			<prop key="test">startController</prop>
+    		</props>
+  		</property>
 	</bean>
-	<bean
-		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-		<property name="maxUploadSize" value="1024000000" />
-		<property name="resolveLazily" value="true" />
-		<property name="maxInMemorySize" value="4096" />
+
+	<bean class="action.StartController" id="startController"></bean>
+
+	<bean id="empController" class="action.EmpController">
+  		<property name="commandClass" value="pojo.Emp"></property>
 	</bean>
-	<mvc:interceptors>
-		<mvc:interceptor>
-			<!-- 后台总控制 -->
-			<mvc:mapping path=""/>
-			<!-- 首页 -->
-			<bean class="util.Interceptor" />
-		</mvc:interceptor>
-	</mvc:interceptors>
+
+	<bean class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter"
+		  id="mappingJacksonHttpMessageConverter">
+		<property name="supportedMediaTypes">  
+       		<list>  
+                <value>text/html;charset=UTF-8</value>  
+            </list>  
+        </property>  
+    </bean>  
+  
+    <!-- 启动Spring MVC的注解功能，完成请求和注解POJO的映射 -->  
+    <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">  
+        <property name="messageConverters">  
+            <list>  
+                <ref bean="mappingJacksonHttpMessageConverter" /><!-- json转换器 -->  
+            </list>  
+        </property>  
+    </bean> 
 </beans>
