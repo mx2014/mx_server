@@ -18,6 +18,7 @@ import pojo.LoginInfo;
 import pojo.UserInfo;
 import service.IndexService;
 import util.Md5;
+import util.Sort;
 
 @Controller
 public class IndexAction {
@@ -30,6 +31,8 @@ public class IndexAction {
 	Login login= new Login();
 	
 	LoginInfo logininfo= new LoginInfo();
+	
+	Sort sort=new Sort();
 	
 	Md5 md5=new Md5();
 
@@ -55,9 +58,6 @@ public class IndexAction {
 		is.add(userinfo);
 		response.getWriter().print("{response:'success', text:{}}");
 		return new ModelAndView("/home/html/index");
-		
-		//System.out.println(md5.getMD5Str(user_name));
-		//user_name=md5.getMD5Str(user_name);
 	}
 	
 	@RequestMapping(value = "login", method = RequestMethod.GET)
@@ -70,9 +70,14 @@ public class IndexAction {
 		   HttpSession session,
 		   ModelMap model)
 				   throws Exception {
+		String[] toSort = new String[] {"user_name"+"="+user_name+"","pwd"+"="+pwd+""};
+		toSort=sort.utilSort(toSort);
+		String sortString=toSort[0]+"&"+toSort[1];
+		md5.getMD5Str(sortString);
+		
+		System.out.println(request.getQueryString());
+		if(md5.getMD5Str(sortString).equals(key)){
 		login = is.login(user_name, pwd);
-		System.out.println(md5.getMD5Str(user_name));
-		System.out.println(md5.getMD5Str(pwd));
 		if (login != null) {
 			md5.getMD5Str(user_name);
 			login.setUser_name(user_name);
@@ -82,26 +87,15 @@ public class IndexAction {
 			logininfo.setMsg("登陆成功");
 			logininfo.setKey(key);
 			return logininfo;
-		
-			//System.out.println("登陆成功");
-			//System.out.println(login);
-			//System.out.println(key);
-			//System.out.println(login);
-			//System.out.println(user_name);
-			//System.out.println(pwd);
-			//System.out.println("---------------------------------");
-			//json="{\"success\":\"true\",\"content\"=[{\"name\":\" "+user_name+" \",\"pwd\":\" "+pwd+" \",\"key\":\"  "+key+"   \"}],\"msg\":\"登陆成功!\"}";
-			//request.setAttribute("login", "登陆成功");
-			//System.out.println(json);
 		} else {
 			logininfo.setSuccess(false);
 			logininfo.setMsg("登陆失败");
 			return logininfo;
-			
-			//System.out.println("登陆失败");
-			//json="{\"success\":true,\"msg\":\"登陆失败!\",\"key\":\"  "+key+"   \"}";
-			//request.setAttribute("login", "登陆失败");
-			//System.out.println(json);
+		}
+		} else{
+			logininfo.setSuccess(false);
+			logininfo.setMsg("被篡改");
+			return logininfo;
 		}
 	}
 }
